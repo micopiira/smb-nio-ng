@@ -1,4 +1,4 @@
-package ch.pontius.nio.smb;
+package com.github.jfrommann.nio.smb;
 
 import jcifs.smb.SmbFile;
 
@@ -7,39 +7,49 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.nio.file.attribute.FileTime;
 import java.util.concurrent.TimeUnit;
 
-public final class SMBFileAttributes implements BasicFileAttributes {
-    /**  nteger value encoding the resource attributes. */
+public final class SmbFileAttributes implements BasicFileAttributes {
+    /**
+     * nteger value encoding the resource attributes.
+     */
     private final int attributes;
 
-    /** Unix timestamp of the creation date. */
+    /**
+     * Unix timestamp of the creation date.
+     */
     private final long created;
 
-    /** Unix timestamp of the modification date. */
+    /**
+     * Unix timestamp of the modification date.
+     */
     private final long modified;
 
-    /** Content length of the file. */
+    /**
+     * Content length of the file.
+     */
     private final long length;
 
-    /** Unique code used to identify the file. */
+    /**
+     * Unique code used to identify the file.
+     */
     private final int code;
 
     /**
-     * Public default constructor for {@link SMBFileAttributes}.
+     * Public default constructor for {@link SmbFileAttributes}.
      *
-     * @param path {@link SMBPath} for which to create {@link SMBFileAttributeView}.
+     * @param path {@link SmbPath} for which to create {@link SmbFileAttributeView}.
      * @throws IOException If something goes wrong while accessing the file.
      */
-    public SMBFileAttributes(SMBPath path) throws IOException {
+    public SmbFileAttributes(SmbPath path) throws IOException {
         this(path.getSmbFile());
     }
 
     /**
-     * Internal constructor for {@link SMBFileAttributes}.
+     * Internal constructor for {@link SmbFileAttributes}.
      *
      * @param file {@link SmbFile} for which to create the attributes.
      * @throws IOException If something goes wrong while accessing the file.
      */
-    SMBFileAttributes(SmbFile file) throws IOException {
+    SmbFileAttributes(SmbFile file) throws IOException {
         this.attributes = file.getAttributes();
         this.created = file.createTime();
         this.modified = file.lastModified();

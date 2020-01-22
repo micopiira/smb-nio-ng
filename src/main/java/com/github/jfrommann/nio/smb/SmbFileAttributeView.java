@@ -1,30 +1,31 @@
-package ch.pontius.nio.smb;
+package com.github.jfrommann.nio.smb;
 
 import jcifs.smb.SmbFile;
 
 import java.io.IOException;
-
 import java.nio.file.attribute.BasicFileAttributeView;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.nio.file.attribute.FileTime;
 import java.util.concurrent.TimeUnit;
 
-public final class SMBFileAttributeView implements BasicFileAttributeView {
+public final class SmbFileAttributeView implements BasicFileAttributeView {
 
-    /** {@link SmbFile} reference used by the current instance of {@link SMBFileAttributeView}. */
-    private final SMBPath path;
+    /**
+     * {@link SmbFile} reference used by the current instance of {@link SmbFileAttributeView}.
+     */
+    private final SmbPath path;
 
     /**
      * Public default constructor.
      *
-     * @param path {@link SMBPath} for which to create {@link SMBFileAttributeView}.
+     * @param path {@link SmbPath} for which to create {@link SmbFileAttributeView}.
      */
-    public SMBFileAttributeView(SMBPath path) {
+    public SmbFileAttributeView(SmbPath path) {
         this.path = path;
     }
 
     /**
-     * Returns the name of {@link SMBFileAttributeView}, which is 'basic'.
+     * Returns the name of {@link SmbFileAttributeView}, which is 'basic'.
      *
      * @return 'basic'
      */
@@ -34,14 +35,14 @@ public final class SMBFileAttributeView implements BasicFileAttributeView {
     }
 
     /**
-     * Reads the {@link SmbFile}'s attributes and returns them in the form of an {@link SMBFileAttributes} instance.
+     * Reads the {@link SmbFile}'s attributes and returns them in the form of an {@link SmbFileAttributes} instance.
      *
-     * @return {@link SMBFileAttributes}
+     * @return {@link SmbFileAttributes}
      * @throws IOException If reading the file's attributes fails.
      */
     @Override
     public BasicFileAttributes readAttributes() throws IOException {
-        return new SMBFileAttributes(this.path.getSmbFile());
+        return new SmbFileAttributes(this.path.getSmbFile());
     }
 
     @Override

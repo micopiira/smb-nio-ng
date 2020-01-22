@@ -1,4 +1,4 @@
-package ch.pontius.nio.smb.watch;
+package com.github.jfrommann.nio.smb.watch;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -96,7 +96,7 @@ public class SmbWatchService implements WatchService {
 
     @Override
     public final void close() throws IOException {
-        synchronized(closeLock) {
+        synchronized (closeLock) {
             if (!closed) {
                 closed = true;
                 poller.close();
