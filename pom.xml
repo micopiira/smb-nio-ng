@@ -6,7 +6,7 @@
 
     <groupId>com.github.jfrommann</groupId>
     <artifactId>smb-nio-ng</artifactId>
-    <version>0.2.2</version>
+    <version>0.2.3-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>SMB NIO Next Generation</name>
@@ -49,7 +49,7 @@
     </licenses>
 
     <scm>
-        <connection>scm:git:git://github.com/jfrommann/smb-nio-ng.git</connection>
+        <connection>scm:git:ssh://github.com/jfrommann/smb-nio-ng.git</connection>
         <developerConnection>scm:git:ssh://github.com/jfrommann/smb-nio-ng.git</developerConnection>
         <url>https://github.com/jfrommann/smb-nio-ng</url>
     </scm>
