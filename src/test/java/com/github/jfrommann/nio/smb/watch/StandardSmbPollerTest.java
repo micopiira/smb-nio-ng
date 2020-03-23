@@ -80,6 +80,7 @@ public class StandardSmbPollerTest {
         assertEquals(watchKey, poller.registry.get(dir));
 
         poller.close();
+        Thread.sleep(poller.getPollIntervalMillis());
         assertTrue(poller.isShutdown());
         assertTrue(poller.registry.isEmpty());
         assertTrue(poller.modifiedTimes.isEmpty());

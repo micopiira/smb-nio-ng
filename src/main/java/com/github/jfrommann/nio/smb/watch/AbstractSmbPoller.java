@@ -41,6 +41,10 @@ public abstract class AbstractSmbPoller implements SmbPoller {
         this.pollIntervalMillis = pollIntervalMillis;
     }
 
+    public long getPollIntervalMillis() {
+        return pollIntervalMillis;
+    }
+
     public void start(SmbWatchService watcher) {
         this.watcher = watcher;
 
