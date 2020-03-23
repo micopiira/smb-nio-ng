@@ -1,5 +1,6 @@
 package com.github.jfrommann.nio.smb.watch;
 
+import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,6 +38,7 @@ public class SmbWatchService implements WatchService {
     private final Object closeLock = new Object();
 
     public SmbWatchService(SmbPoller poller) {
+        Validate.notNull(poller, "Parameter 'poller' may not be null!");
         this.poller = poller;
         poller.start(this);
     }
@@ -50,7 +52,9 @@ public class SmbWatchService implements WatchService {
     }
 
     protected final void enqueueKey(WatchKey key) {
-        pendingKeys.offer(key);
+        if (key != null) {
+            pendingKeys.offer(key);
+        }
     }
 
     private void checkOpen() {
