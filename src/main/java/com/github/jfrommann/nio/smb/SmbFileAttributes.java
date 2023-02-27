@@ -8,10 +8,6 @@ import java.nio.file.attribute.FileTime;
 import java.util.concurrent.TimeUnit;
 
 public final class SmbFileAttributes implements BasicFileAttributes {
-    /**
-     * nteger value encoding the resource attributes.
-     */
-    private final int attributes;
 
     /**
      * Unix timestamp of the creation date.
@@ -33,6 +29,10 @@ public final class SmbFileAttributes implements BasicFileAttributes {
      */
     private final int code;
 
+    private final boolean isDirectory;
+
+    private final boolean isRegularFile;
+
     /**
      * Public default constructor for {@link SmbFileAttributes}.
      *
@@ -50,11 +50,12 @@ public final class SmbFileAttributes implements BasicFileAttributes {
      * @throws IOException If something goes wrong while accessing the file.
      */
     SmbFileAttributes(SmbFile file) throws IOException {
-        this.attributes = file.getAttributes();
         this.created = file.createTime();
         this.modified = file.lastModified();
         this.length = file.length();
         this.code = file.hashCode();
+        this.isDirectory = file.isDirectory();
+        this.isRegularFile = file.isFile();
     }
 
     @Override
@@ -74,12 +75,12 @@ public final class SmbFileAttributes implements BasicFileAttributes {
 
     @Override
     public boolean isRegularFile() {
-        return (this.attributes & SmbFile.ATTR_DIRECTORY) == 0;
+        return this.isRegularFile;
     }
 
     @Override
     public boolean isDirectory() {
-        return (this.attributes & SmbFile.ATTR_DIRECTORY) != 0;
+        return this.isDirectory;
     }
 
     @Override
