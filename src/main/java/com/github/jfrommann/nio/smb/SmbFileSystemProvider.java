@@ -11,7 +11,7 @@ import jcifs.context.AbstractCIFSContext;
 import jcifs.context.BaseContext;
 import jcifs.context.CIFSContextCredentialWrapper;
 import jcifs.context.SingletonContext;
-import jcifs.smb.NtlmPasswordAuthentication;
+import jcifs.smb.NtlmPasswordAuthenticator;
 import jcifs.smb.SmbFile;
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -258,9 +258,13 @@ public final class SmbFileSystemProvider extends FileSystemProvider {
             return context;
         }
         final String domainAndUser = StringUtils.substringBefore(authority, "@");
-        final String userInfo = domainAndUser.contains(";") ? StringUtils.substringAfter(domainAndUser, ";") : domainAndUser;
+        final boolean hasDomain = domainAndUser.contains(";");
+        final String userInfo = hasDomain ? StringUtils.substringAfter(domainAndUser, ";") : domainAndUser;
+        final String user = StringUtils.substringBefore(userInfo, ":");
+        final String password = StringUtils.substringAfter(userInfo, ":");
+        final String domain = hasDomain ? StringUtils.substringBefore(domainAndUser, ";") : null;
         return (StringUtils.isNotEmpty(userInfo)) ?
-                new CIFSContextCredentialWrapper((AbstractCIFSContext) context, new NtlmPasswordAuthentication(context, userInfo)) : context;
+                new CIFSContextCredentialWrapper((AbstractCIFSContext) context, new NtlmPasswordAuthenticator(domain, user, password)) : context;
     }
 
     /**

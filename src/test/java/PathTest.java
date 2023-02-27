@@ -1,5 +1,8 @@
+import com.github.jfrommann.nio.smb.SmbFileSystem;
 import com.github.jfrommann.nio.smb.SmbFileSystemProvider;
 import com.github.jfrommann.nio.smb.SmbPath;
+import jcifs.CIFSContext;
+import jcifs.smb.NtlmPasswordAuthenticator;
 import org.junit.jupiter.api.Test;
 
 import java.net.URI;
@@ -175,5 +178,27 @@ public class PathTest {
         final Path leftPath = provider.getPath(new URI(PATH_01));
         final Path rightPath = Paths.get("/tmp/test.txt");
         assertThrows(IllegalArgumentException.class, () -> leftPath.compareTo(rightPath));
+    }
+
+    @Test
+    public void testCredentialsWithDomain() {
+        final SmbFileSystemProvider provider = SmbFileSystemProvider.getDefault();
+        final SmbPath path = provider.getPath(URI.create("smb://domain;user:pass@host/test/"));
+        final CIFSContext context = ((SmbFileSystem) path.getFileSystem()).context();
+        final NtlmPasswordAuthenticator authenticator = context.getCredentials().unwrap(NtlmPasswordAuthenticator.class);
+        assertEquals(authenticator.getUserDomain(), "domain");
+        assertEquals(authenticator.getUsername(), "user");
+        assertEquals(authenticator.getPassword(), "pass");
+    }
+
+    @Test
+    public void testCredentials() {
+        final SmbFileSystemProvider provider = SmbFileSystemProvider.getDefault();
+        final SmbPath path = provider.getPath(URI.create("smb://user:pass@host/test/"));
+        final CIFSContext context = ((SmbFileSystem) path.getFileSystem()).context();
+        final NtlmPasswordAuthenticator authenticator = context.getCredentials().unwrap(NtlmPasswordAuthenticator.class);
+        assertEquals(authenticator.getUserDomain(), "");
+        assertEquals(authenticator.getUsername(), "user");
+        assertEquals(authenticator.getPassword(), "pass");
     }
 }
